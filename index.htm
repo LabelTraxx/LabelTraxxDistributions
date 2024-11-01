@@ -68,12 +68,15 @@
                 const data = await response.json();
                 const fileList = document.getElementById('file-list');
                 data.forEach(item => {
-                    const li = document.createElement('li');
-                    const link = document.createElement('a');
-                    link.href = item.html_url;
-                    link.textContent = item.name;
-                    li.appendChild(link);
-                    fileList.appendChild(li);
+                    // Skip LICENSE and index.htm files
+                    if (item.name !== 'LICENSE' && item.name !== 'index.htm') {
+                        const li = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = item.html_url;
+                        link.textContent = item.name;
+                        li.appendChild(link);
+                        fileList.appendChild(li);
+                    }
                 });
             } catch (error) {
                 console.error('Error fetching repository contents:', error);
