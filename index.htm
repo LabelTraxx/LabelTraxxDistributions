@@ -56,24 +56,32 @@
         <p>For more details, check out the <a href="https://github.com/LabelTraxx/LabelTraxxDistributions/blob/main/LICENSE" class="license-link">Public License</a>.</p>
     </div>
     <div class="footer">
-        <p>© 2024 Amtech Software. All rights reserved.</p>
+        <p>© 2024 Your Repository. All rights reserved.</p>
     </div>
     <script>
-        async function fetchRepoContents() {
+        async function fetchRepoContents(path = '') {
             const username = 'labeltraxx';
             const repo = 'LabelTraxxDistributions';
-            const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
+            const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 const fileList = document.getElementById('file-list');
+                fileList.innerHTML = ''; // Clear the list before displaying new content
                 data.forEach(item => {
                     // Skip LICENSE and index.htm files
                     if (item.name !== 'LICENSE' && item.name !== 'index.htm') {
                         const li = document.createElement('li');
                         const link = document.createElement('a');
-                        link.href = item.html_url;
-                        link.textContent = item.name;
+                        if (item.type === 'dir') {
+                            link.href = '#';
+                            link.textContent = item.name;
+                            link.onclick = () => fetchRepoContents(item.path); // Fetch contents of the clicked folder
+                        } else {
+                            link.href = item.download_url;
+                            link.textContent = item.name;
+                            link.target = '_blank'; // Open in a new tab
+                        }
                         li.appendChild(link);
                         fileList.appendChild(li);
                     }
@@ -83,7 +91,7 @@
             }
         }
 
-        window.onload = fetchRepoContents;
+        window.onload = () => fetchRepoContents();
     </script>
 </body>
 </html>
