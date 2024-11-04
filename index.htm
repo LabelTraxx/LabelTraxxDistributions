@@ -70,7 +70,7 @@
                 fileList.innerHTML = ''; // Clear the list before displaying new content
                 data.forEach(item => {
                     // Skip LICENSE and index.htm files
-                    if (item.name !== 'LICENSE' && item.name !== 'index.htm' && item.name !== '.github/workflows') {
+                    if (item.name !== 'LICENSE' && item.name !== 'index.htm' && item.name !== '.github') {
                         const li = document.createElement('li');
                         const link = document.createElement('a');
                         if (item.type === 'dir') {
